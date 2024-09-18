@@ -1,0 +1,43 @@
+#version: "3.9"
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/rideshare_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+
+    env_file:
+      - .env
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${PGDATABASE}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+    ports:
+      - "5432:5432"
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U ${PGUSER}" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+
+  redis:
+    image: redis:latest
+    container_name: some-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
+
