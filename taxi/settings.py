@@ -45,12 +45,14 @@ INSTALLED_APPS = [
 
     # Third party
     "rest_framework",   # Django Rest Framework DRF
+    'corsheaders',
 
     # Local
     "trips",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -172,3 +174,8 @@ SIMPLE_JWT = {
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3001",
+]
